@@ -2,12 +2,13 @@ import { Activity, AlertTriangle, ArrowRight, ChevronDown, FileText, MapPin, Rad
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { Alert, Well } from '../types';
 import { telemetry } from '../data/mockData';
+import { rankOffsets } from '../services/mockServices';
 
 type Props={well:Well;allWells:Well[];rank:{well:Well;dist:string;score:number}[];alerts:Alert[];go:(page:any)=>void;onEvidence:(well:Well)=>void;onReview:(alert:Alert)=>void;onSetActive:(well:Well)=>void};
 const n=(x:number)=>x.toLocaleString('en-US');
 export default function WellDetail({well,allWells,rank,alerts,go,onEvidence,onReview,onSetActive}:Props){
  const events=well.events.filter(e=>e.type!=='No recorded event');
- const relevant=allWells.filter(w=>w.id!==well.id).map(w=>{const distance=Math.sqrt(Math.pow((w.lat-well.lat)*111,2)+Math.pow((w.lon-well.lon)*94,2)),geo=Math.max(25,Math.round(100-distance*3)),formation=w.formation===well.formation?100:42,event=w.events.find(e=>e.type!=='No recorded event'),depth=event&&event.from<=well.currentDepth+450&&event.to>=well.currentDepth-450?84:50,score=Math.round(geo*.35+formation*.4+depth*.25);return{well:w,dist:distance.toFixed(1),score}}).sort((a,b)=>b.score-a.score).slice(0,3);
+ const relevant=rankOffsets(allWells,well,well.currentDepth).slice(0,3);
  const pointX=140,pointY=34+Math.min(148,well.currentDepth/4500*148);
  return <>
   <div className="page-heading"><div><div className="eyebrow">WELL RECORD · SYNTHETIC</div><h1>{well.name}</h1><p>{well.field||'Upper Assam Basin'} · {well.type||'Well'} · {well.formation} · {well.phase}</p></div><div className="heading-actions"><button className="secondary-btn" onClick={()=>go('Operations map')}><MapPin size={14}/> Back to map</button><button className="primary-btn" onClick={()=>go('Knowledge search')}>Search this well <ArrowRight size={14}/></button></div></div>

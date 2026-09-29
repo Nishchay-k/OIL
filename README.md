@@ -1,6 +1,6 @@
-# eRTMAC-NWIS
+# Sanket (संकेत)
 
-A React and TypeScript front-end project built with Vite. This README describes the codebase and its local development workflow.
+Sanket is a React and TypeScript well-operations intelligence prototype built with Vite. This README describes its codebase and local development workflow.
 
 ## Development stack
 
@@ -32,7 +32,7 @@ src/
     └── index.ts               # Shared TypeScript data models
 ```
 
-The app shell currently owns navigation and shared session state. Several established screens and reusable UI elements remain in `App.tsx`; the dedicated page files contain the newer views. Mock data, service behavior, and shared types are kept in separate modules so those boundaries can be maintained as the project grows.
+The app shell owns shared state and navigation. The Overview map provides one viewport with switchable Surface and 2.5D views. It shares well selection, search, status/event filters, relevance, and formation/event layers with the Operations map; pan and zoom remain local to each canvas. Offset wells and evidence are reached from the active-well workflow. The sidebar groups search and document ingestion under Knowledge & documents, with Review queue, Analytics & audit, and Settings available as direct navigation items. Mock data, service behavior, and shared types stay separate so the data layer can later be replaced without coupling it to the UI.
 
 ## Local development
 
@@ -52,6 +52,6 @@ npm run build
 npm run preview
 ```
 
-## Data used in development
+## Data and prototype limits
 
-The app currently uses local mock data and in-memory state. Changes made through the interface are not persisted after the session. There is no production API or external service configured in this project.
+The interface uses simulated well, telemetry, report, alert, and analytics data with in-memory session state. Changes made through the interface are not persisted after the session. This project is not connected to OIL systems or a production API, and its map coordinates and subsurface geometry are illustrative.
